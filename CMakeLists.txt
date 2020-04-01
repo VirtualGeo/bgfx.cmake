@@ -33,7 +33,9 @@ option( BGFX_CONFIG_DEBUG     "Enables debug configuration on all builds"     OF
 option( BGFX_USE_DEBUG_SUFFIX "Add 'd' suffix to debug output targets"        ON  )
 set( BGFX_OPENGL_VERSION  "" CACHE STRING "Specify minimum opengl version" )
 
-set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/bgfx-install)
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+	set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/bgfx-install)
+endif()
 
 if( NOT BX_DIR )
 	set( BX_DIR "${CMAKE_CURRENT_SOURCE_DIR}/bx" CACHE STRING "Location of bx." )
