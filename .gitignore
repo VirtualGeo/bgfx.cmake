@@ -12,4 +12,4 @@ install/
 install_manifest.txt
 generated/*
 !generated/*.in
-cmake_install.cmake
+bgfx-install/
