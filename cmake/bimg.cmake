@@ -45,5 +45,5 @@ set_target_properties( bimg PROPERTIES FOLDER "bgfx" )
 
 # Export debug build as "bimgd"
 if( BGFX_USE_DEBUG_SUFFIX )
-	set_target_properties( bimg PROPERTIES OUTPUT_NAME_DEBUG "bimgd" )
+	set_target_properties( bimg PROPERTIES DEBUG_POSTFIX d )
 endif()

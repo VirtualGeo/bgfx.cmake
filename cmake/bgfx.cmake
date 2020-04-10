@@ -110,7 +110,7 @@ set_target_properties( bgfx PROPERTIES FOLDER "bgfx" )
 
 # Export debug build as "bgfxd"
 if( BGFX_USE_DEBUG_SUFFIX )
-	set_target_properties( bgfx PROPERTIES OUTPUT_NAME_DEBUG "bgfxd" )
+	set_target_properties( bgfx PROPERTIES DEBUG_POSTFIX d )
 endif()
 
 # in Xcode we need to specify this file as objective-c++ (instead of renaming to .mm)

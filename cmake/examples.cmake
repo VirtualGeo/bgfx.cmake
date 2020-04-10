@@ -135,6 +135,7 @@ function( add_example ARG_NAME )
 		add_library( example-${ARG_NAME} STATIC EXCLUDE_FROM_ALL ${SOURCES} )
 		target_include_directories( example-${ARG_NAME} PUBLIC ${BGFX_DIR}/examples/common )
 		target_link_libraries( example-${ARG_NAME} PUBLIC bgfx dear-imgui meshoptimizer )
+
 		if( BGFX_WITH_GLFW )
 			find_package( glfw3 REQUIRED )
 			target_link_libraries( example-${ARG_NAME} PUBLIC glfw )
@@ -152,7 +153,7 @@ function( add_example ARG_NAME )
 		else()
 			add_executable( example-${ARG_NAME} WIN32 EXCLUDE_FROM_ALL ${SOURCES} )
 		endif()
-		target_link_libraries( example-${ARG_NAME} example-common )
+		target_link_libraries( example-${ARG_NAME} PUBLIC example-common )
 		configure_debugging( example-${ARG_NAME} WORKING_DIR ${BGFX_DIR}/examples/runtime )
 		if( MSVC )
 			set_target_properties( example-${ARG_NAME} PROPERTIES LINK_FLAGS "/ENTRY:\"mainCRTStartup\"" )
@@ -269,9 +270,21 @@ if( BGFX_BUILD_EXAMPLES )
 		38-bloom
 		39-assao
 #		40-svt
-	)
+	)		
+
+	set(BGFX_EXAMPLES
+			01-cubes)
 
 	foreach( EXAMPLE ${BGFX_EXAMPLES} )
 		add_example( ${EXAMPLE} )
 	endforeach()
+
+	if(BGFX_SHADERC_LIB)
+		set( BGFX_EXAMPLES_WITH_SHADERC 
+				00-embed-shaderc)
+		foreach( EXAMPLE ${BGFX_EXAMPLES_WITH_SHADERC} )
+			add_example(${EXAMPLE})
+			target_link_libraries( example-${EXAMPLE} PUBLIC shaderclib )
+		endforeach()
+	endif()
 endif()

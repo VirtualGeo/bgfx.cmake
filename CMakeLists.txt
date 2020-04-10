@@ -22,6 +22,7 @@ if( APPLE AND NOT XCODE )
 endif()
 
 option( BGFX_BUILD_TOOLS      "Build bgfx tools."                             ON  )
+option( BGFX_SHADERC_LIB      "Build shaderc tools as a lib."                 ON  )
 option( BGFX_BUILD_EXAMPLES   "Build bgfx examples."                          ON  )
 option( BGFX_INSTALL          "Create installation target."                   ON  )
 option( BGFX_INSTALL_EXAMPLES "Install examples and their runtimes."          OFF )
@@ -36,6 +37,8 @@ set( BGFX_OPENGL_VERSION  "" CACHE STRING "Specify minimum opengl version" )
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 	set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/bgfx-install)
 endif()
+
+#set(CMAKE_DEBUG_POSTFIX "d" CACHE STRING "add a debug postfix globally")
 
 if( NOT BX_DIR )
 	set( BX_DIR "${CMAKE_CURRENT_SOURCE_DIR}/bx" CACHE STRING "Location of bx." )
@@ -100,6 +103,17 @@ if( BGFX_INSTALL )
 		install( TARGETS shaderc
 			EXPORT bgfx-config
 			DESTINATION bin )
+
+		if(BGFX_SHADERC_LIB)
+			set(SHARDERC_DEPS bgfx-vertexdecl bgfx-shader-spirv fcpp glsl-optimizer glslang spirv-cross spirv-tools shaderclib)
+			foreach(SHADERC_DEP ${SHADERC_DEPS})
+				install( TARGETS ${SHADERC_DEP}
+					EXPORT shaderc-config
+					ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/shaderc )
+			endforeach()
+			install( FILES ${BGFX_DIR}/tools/shaderc/shaderc.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/shaderc )
+		endif()
+
 		install( TARGETS geometryc
 			EXPORT bgfx-config
 			DESTINATION bin )
