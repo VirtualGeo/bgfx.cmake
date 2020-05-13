@@ -1,6 +1,7 @@
 [Bb]uild/
 *.swp
 CMakeCache.txt
+CMakeLists.txt.user
 CMakeFiles/
 Debug/
 Release/

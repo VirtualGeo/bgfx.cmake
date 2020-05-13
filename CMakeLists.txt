@@ -92,7 +92,12 @@ if( BGFX_INSTALL )
 		ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} )
 	install( DIRECTORY ${BGFX_DIR}/include DESTINATION . )
 
-	# install export
+        # install shaderclib
+        install( TARGETS shaderclib
+                ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} )
+        install( DIRECTORY ${BGFX_DIR}/tools/shaderc DESTINATION  include/tools/)
+
+        # install export
 	install(
 		EXPORT bgfx-config
 		NAMESPACE bgfx::
