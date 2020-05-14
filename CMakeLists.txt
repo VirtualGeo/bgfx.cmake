@@ -110,7 +110,7 @@ if( BGFX_INSTALL )
 			DESTINATION bin )
 
 		if(BGFX_SHADERC_LIB)
-			set(SHARDERC_DEPS bgfx-vertexdecl bgfx-shader-spirv fcpp glsl-optimizer glslang spirv-cross spirv-tools shaderclib)
+                        set(SHADERC_DEPS bgfx-vertexdecl bgfx-shader-spirv fcpp glsl-optimizer glslang spirv-cross spirv-tools shaderclib)
 			foreach(SHADERC_DEP ${SHADERC_DEPS})
 				install( TARGETS ${SHADERC_DEP}
 					EXPORT shaderc-config
