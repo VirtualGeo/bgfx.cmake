@@ -55,4 +55,4 @@ else()
 	endif()
 endif()
 
-set_target_properties( spirv-tools PROPERTIES FOLDER "bgfx/3rdparty" )
+set_target_properties( spirv-tools PROPERTIES FOLDER "bgfx/3rdparty" DEBUG_POSTFIX d )

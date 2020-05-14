@@ -28,5 +28,5 @@ if( MSVC )
 	set_target_properties( fcpp PROPERTIES COMPILE_FLAGS "/W0" )
 endif()
 
-set_target_properties( fcpp PROPERTIES FOLDER "bgfx/3rdparty" )
+set_target_properties( fcpp PROPERTIES FOLDER "bgfx/3rdparty" DEBUG_POSTFIX d )
 set_source_files_properties( ${BGFX_DIR}/3rdparty/fcpp/usecpp.c PROPERTIES HEADER_FILE_ONLY ON )
