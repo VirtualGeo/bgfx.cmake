@@ -110,11 +110,11 @@ if( BGFX_INSTALL )
 			DESTINATION bin )
 
 		if(BGFX_SHADERC_LIB)
-                        set(SHADERC_DEPS bgfx-vertexdecl bgfx-shader-spirv fcpp glsl-optimizer glslang spirv-cross spirv-tools shaderclib)
+			set(SHADERC_DEPS bgfx-vertexdecl bgfx-shader-spirv fcpp glsl-optimizer glslang spirv-cross spirv-tools shaderclib)
 			foreach(SHADERC_DEP ${SHADERC_DEPS})
 				install( TARGETS ${SHADERC_DEP}
 					EXPORT shaderc-config
-					ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/shaderc )
+					ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 			endforeach()
 			install( FILES ${BGFX_DIR}/tools/shaderc/shaderc.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/shaderc )
 		endif()
