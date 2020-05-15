@@ -36,7 +36,7 @@ file( GLOB GLSL-OPTIMIZER_SOURCES ${BGFX_DIR}/3rdparty/glsl-optimizer/src/glsl/*
 file( GLOB GLSL-OPTIMIZER_SOURCES_REMOVE ${BGFX_DIR}/3rdparty/glsl-optimizer/src/glsl/main.cpp ${BGFX_DIR}/3rdparty/glsl-optimizer/src/glsl/builtin_stubs.cpp )
 list( REMOVE_ITEM GLSL-OPTIMIZER_SOURCES ${GLSL-OPTIMIZER_SOURCES_REMOVE} )
 add_library( glsl-optimizer ${GLSL-OPTIMIZER_SOURCES} ${MESA_SOURCES} ${GLCPP_SOURCES} )
-target_link_libraries( glsl-optimizer glcpp mesa )
+#target_link_libraries( glsl-optimizer glcpp mesa )
 target_include_directories( glsl-optimizer PUBLIC ${GLSL-OPTIMIZER_INCLUDES} )
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 	target_compile_options( glsl-optimizer
