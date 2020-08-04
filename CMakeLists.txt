@@ -19,6 +19,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Makefile generators on apple need this flag to compile mixed objective/c++
 if( APPLE AND NOT XCODE )
 	set( CMAKE_CXX_FLAGS "-ObjC++" )
+elseif(MSVC)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP${NB_PROCS}")
 endif()
 
 option( BGFX_BUILD_TOOLS      "Build bgfx tools."                             ON  )
@@ -31,14 +33,15 @@ option( BGFX_USE_OVR          "Build with OVR support."                       OF
 option( BGFX_AMALGAMATED      "Amalgamated bgfx build for faster compilation" OFF )
 option( BX_AMALGAMATED        "Amalgamated bx build for faster compilation"   OFF )
 option( BGFX_CONFIG_DEBUG     "Enables debug configuration on all builds"     OFF )
-option( BGFX_USE_DEBUG_SUFFIX "Add 'd' suffix to debug output targets"        ON  )
+option( BGFX_USE_DEBUG_SUFFIX "Add 'd' suffix to debug output targets"        OFF  )
 set( BGFX_OPENGL_VERSION  "" CACHE STRING "Specify minimum opengl version" )
 
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 	set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/bgfx-install)
 endif()
 
-#set(CMAKE_DEBUG_POSTFIX "d" CACHE STRING "add a debug postfix globally")
+set(CMAKE_DEBUG_POSTFIX "d" CACHE STRING "add a debug postfix globally")
+set(CMAKE_RELWITHDEBINFO_POSTFIX "rd" CACHE STRING "add a release with debug postfix globally")
 
 if( NOT BX_DIR )
 	set( BX_DIR "${CMAKE_CURRENT_SOURCE_DIR}/bx" CACHE STRING "Location of bx." )
@@ -94,7 +97,7 @@ if( BGFX_INSTALL )
 
         # install shaderclib
         install( TARGETS shaderclib
-                ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} )
+                ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
         install( DIRECTORY ${BGFX_DIR}/tools/shaderc DESTINATION  include/tools/)
 
         # install export
@@ -102,6 +105,10 @@ if( BGFX_INSTALL )
 		EXPORT bgfx-config
 		NAMESPACE bgfx::
 		DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/bgfx)
+
+	install( FILES ${BGFX_DIR}/src/bgfx_shader.sh
+		DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/bgfx"
+	)
 
 	# install tools
 	if( BGFX_BUILD_TOOLS )
