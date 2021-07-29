@@ -134,8 +134,7 @@ function( add_example ARG_NAME )
 	if( ARG_COMMON )
 		add_library( example-${ARG_NAME} STATIC EXCLUDE_FROM_ALL ${SOURCES} )
 		target_include_directories( example-${ARG_NAME} PUBLIC ${BGFX_DIR}/examples/common )
-		target_link_libraries( example-${ARG_NAME} PUBLIC bgfx dear-imgui meshoptimizer )
-
+		target_link_libraries( example-${ARG_NAME} PUBLIC bgfx bx bimg dear-imgui meshoptimizer )
 		if( BGFX_WITH_GLFW )
 			find_package( glfw3 REQUIRED )
 			target_link_libraries( example-${ARG_NAME} PUBLIC glfw )
@@ -269,18 +268,20 @@ if( BGFX_BUILD_EXAMPLES )
 #		37-gpudrivenrendering
 		38-bloom
 		39-assao
-#		40-svt
-	)		
-
-	set(BGFX_EXAMPLES
-			01-cubes)
+		40-svt
+#		41-tess
+		42-bunnylod
+		43-denoise
+		44-sss
+		45-bokeh
+	)
 
 	foreach( EXAMPLE ${BGFX_EXAMPLES} )
 		add_example( ${EXAMPLE} )
 	endforeach()
 
 	if(BGFX_SHADERC_LIB)
-		set( BGFX_EXAMPLES_WITH_SHADERC 
+		set( BGFX_EXAMPLES_WITH_SHADERC
 				00-embed-shaderc)
 		foreach( EXAMPLE ${BGFX_EXAMPLES_WITH_SHADERC} )
 			add_example(${EXAMPLE})
