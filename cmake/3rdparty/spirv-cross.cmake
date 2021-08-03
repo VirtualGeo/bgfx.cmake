@@ -26,6 +26,10 @@ target_include_directories( spirv-cross PUBLIC
 	${BGFX_DIR}/3rdparty/spirv-cross/include
 )
 
+if(MSVC)
+	target_compile_options( spirv-cross PRIVATE "/bigobj" )
+endif()
+
 if( MSVC )
 	target_compile_options( spirv-cross PRIVATE
 		"/wd4018"

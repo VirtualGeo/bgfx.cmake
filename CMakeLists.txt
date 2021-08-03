@@ -184,7 +184,7 @@ if( BGFX_INSTALL )
 			DESTINATION "${CMAKE_INSTALL_BINDIR}" )
 
 		if(BGFX_SHADERC_LIB)
-			set(SHADERC_DEPS bgfx-vertexdecl bgfx-shader-spirv fcpp glsl-optimizer glslang spirv-cross spirv-tools shaderclib)
+			set(SHADERC_DEPS fcpp glsl-optimizer glslang spirv-cross spirv-tools shaderclib webgpu)
 			foreach(SHADERC_DEP ${SHADERC_DEPS})
 				install( TARGETS ${SHADERC_DEP}
 					EXPORT shaderc-config
