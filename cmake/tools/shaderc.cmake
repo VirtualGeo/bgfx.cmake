@@ -19,12 +19,11 @@ include( cmake/3rdparty/webgpu.cmake )
 
 if(BGFX_SHADERC_LIB)
 	add_library( shaderclib SHARED ${BGFX_DIR}/tools/shaderc/shaderc.cpp ${BGFX_DIR}/tools/shaderc/shaderc.h ${BGFX_DIR}/tools/shaderc/shaderc_glsl.cpp ${BGFX_DIR}/tools/shaderc/shaderc_hlsl.cpp ${BGFX_DIR}/tools/shaderc/shaderc_pssl.cpp ${BGFX_DIR}/tools/shaderc/shaderc_spirv.cpp ${BGFX_DIR}/tools/shaderc/shaderc_metal.cpp )
-	target_compile_definitions( shaderclib PRIVATE "-D_CRT_SECURE_NO_WARNINGS" )
-	target_compile_definitions( shaderclib PRIVATE "-DSHADERC_LIB" )
+	if(MSVC)
+		target_compile_definitions( shaderclib PRIVATE "_CRT_SECURE_NO_WARNINGS" )
+	endif()
+	target_compile_definitions( shaderclib PRIVATE "SHADERC_LIB" )
 	set_target_properties( shaderclib PROPERTIES FOLDER "bgfx/tools" )
-	#target_link_libraries( shaderclib	PUBLIC bgfx bx bimg fcpp glsl-optimizer glslang spirv-cross spirv-tools
-	#									PRIVATE bgfx-vertexdecl bgfx-shader-spirv)
-										# bx bimg bgfx-vertexlayout bgfx-shader fcpp glsl-optimizer glslang spirv-cross spirv-tools webgpu
 	target_link_libraries( shaderclib PRIVATE bx bimg bgfx-vertexlayout bgfx-shader fcpp glsl-optimizer glslang spirv-cross spirv-tools webgpu )
 
 	if( BGFX_USE_DEBUG_SUFFIX )
@@ -34,15 +33,15 @@ if(BGFX_SHADERC_LIB)
 	add_executable( shaderc ${BGFX_DIR}/tools/shaderc/main.cpp )
 	target_compile_definitions( shaderc PRIVATE "-D_CRT_SECURE_NO_WARNINGS" )
 	set_target_properties( shaderc PROPERTIES FOLDER "bgfx/tools" )
-	target_link_libraries( shaderc	PUBLIC shaderclib)
+	target_link_libraries( shaderc	PRIVATE shaderclib bx bimg bgfx-vertexlayout bgfx-shader fcpp glsl-optimizer glslang spirv-cross spirv-tools webgpu )
 else()
 	add_executable( shaderc ${BGFX_DIR}/tools/shaderc/main.cpp ${BGFX_DIR}/tools/shaderc/shaderc.cpp ${BGFX_DIR}/tools/shaderc/shaderc.h ${BGFX_DIR}/tools/shaderc/shaderc_glsl.cpp ${BGFX_DIR}/tools/shaderc/shaderc_hlsl.cpp ${BGFX_DIR}/tools/shaderc/shaderc_pssl.cpp ${BGFX_DIR}/tools/shaderc/shaderc_spirv.cpp ${BGFX_DIR}/tools/shaderc/shaderc_metal.cpp )
-	target_compile_definitions( shaderc PRIVATE "-D_CRT_SECURE_NO_WARNINGS" )
+	if(MSVC)
+		target_compile_definitions( shaderc PRIVATE "_CRT_SECURE_NO_WARNINGS" )
+	endif()
 	set_target_properties( shaderc PROPERTIES FOLDER "bgfx/tools" )
 	target_link_libraries( shaderc PRIVATE bx bimg bgfx-vertexlayout bgfx-shader fcpp glsl-optimizer glslang spirv-cross spirv-tools webgpu )
 endif()
-
-
 
 if( BGFX_CUSTOM_TARGETS )
 	add_dependencies( tools shaderc )
