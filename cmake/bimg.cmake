@@ -43,8 +43,3 @@ target_link_libraries( bimg PUBLIC bx PRIVATE astc-codec astc edtaa3 etc1 etc2 i
 
 # Put in a "bgfx" folder in Visual Studio
 set_target_properties( bimg PROPERTIES FOLDER "bgfx" )
-
-# Export debug build as "bgfxd"
-if( BGFX_USE_DEBUG_SUFFIX )
-	set_target_properties( bimg PROPERTIES DEBUG_POSTFIX d RELWITHDEBINFO_POSTFIX rd )
-endif()

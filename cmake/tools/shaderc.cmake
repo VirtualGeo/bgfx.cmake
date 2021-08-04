@@ -26,9 +26,7 @@ if(BGFX_SHADERC_LIB)
 	set_target_properties( shaderclib PROPERTIES FOLDER "bgfx/tools" )
 	target_link_libraries( shaderclib PRIVATE bx bimg bgfx-vertexlayout bgfx-shader fcpp glsl-optimizer glslang spirv-cross spirv-tools webgpu )
 
-	if( BGFX_USE_DEBUG_SUFFIX )
-		set_target_properties( shaderclib PROPERTIES DEBUG_POSTFIX d )
-	endif()
+	set_target_properties( shaderclib PROPERTIES DEBUG_POSTFIX d RELWITHDEBINFO_POSTFIX rd )
 
 	add_executable( shaderc ${BGFX_DIR}/tools/shaderc/main.cpp )
 	target_compile_definitions( shaderc PRIVATE "-D_CRT_SECURE_NO_WARNINGS" )

@@ -122,11 +122,6 @@ endif()
 # Put in a "bgfx" folder in Visual Studio
 set_target_properties( bgfx PROPERTIES FOLDER "bgfx" )
 
-# Export debug build as "bgfxd"
-if( BGFX_USE_DEBUG_SUFFIX )
-	set_target_properties( bgfx PROPERTIES DEBUG_POSTFIX d RELWITHDEBINFO_POSTFIX rd )
-endif()
-
 # in Xcode we need to specify this file as objective-c++ (instead of renaming to .mm)
 if (XCODE)
 	set_source_files_properties(${BGFX_DIR}/src/renderer_vk.cpp PROPERTIES LANGUAGE OBJCXX XCODE_EXPLICIT_FILE_TYPE sourcecode.cpp.objcpp)

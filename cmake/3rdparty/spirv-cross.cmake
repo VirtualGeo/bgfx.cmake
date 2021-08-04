@@ -39,4 +39,4 @@ if( MSVC )
 	)
 endif()
 
-set_target_properties( spirv-cross PROPERTIES FOLDER "bgfx/3rdparty" DEBUG_POSTFIX d )
+set_target_properties( spirv-cross PROPERTIES FOLDER "bgfx/3rdparty")

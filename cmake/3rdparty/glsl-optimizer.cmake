@@ -65,4 +65,4 @@ elseif(APPLE)
 		-Wno-deprecated-register
 	)
 endif()
-set_target_properties( glsl-optimizer PROPERTIES FOLDER "bgfx/3rdparty" DEBUG_POSTFIX d )
+set_target_properties( glsl-optimizer PROPERTIES FOLDER "bgfx/3rdparty" )
