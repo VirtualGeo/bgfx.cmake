@@ -14,3 +14,4 @@ install_manifest.txt
 generated/*
 !generated/*.in
 bgfx-install/
+.vscode/
