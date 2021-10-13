@@ -18,20 +18,58 @@ include( cmake/3rdparty/spirv-tools.cmake )
 include( cmake/3rdparty/webgpu.cmake )
 
 if(BGFX_SHADERC_LIB)
-	add_library( shaderclib SHARED ${BGFX_DIR}/tools/shaderc/shaderc.cpp ${BGFX_DIR}/tools/shaderc/shaderc.h ${BGFX_DIR}/tools/shaderc/shaderc_glsl.cpp ${BGFX_DIR}/tools/shaderc/shaderc_hlsl.cpp ${BGFX_DIR}/tools/shaderc/shaderc_pssl.cpp ${BGFX_DIR}/tools/shaderc/shaderc_spirv.cpp ${BGFX_DIR}/tools/shaderc/shaderc_metal.cpp )
-	if(MSVC)
-		target_compile_definitions( shaderclib PRIVATE "_CRT_SECURE_NO_WARNINGS" )
+	set(SHADERCLIB_BUILD_TYPE SHARED)
+	if (EMSCRIPTEN)
+		set(SHADERCLIB_BUILD_TYPE STATIC)
+
+	add_library( shaderclib ${SHADERCLIB_BUILD_TYPE}
+		${BGFX_DIR}/tools/shaderc/shaderc.cpp
+		${BGFX_DIR}/tools/shaderc/shaderc.h
+		${BGFX_DIR}/tools/shaderc/shaderc_glsl.cpp
+	)
+	else()
+		add_library( shaderclib ${SHADERCLIB_BUILD_TYPE}
+			${BGFX_DIR}/tools/shaderc/shaderc.cpp
+			${BGFX_DIR}/tools/shaderc/shaderc.h
+			${BGFX_DIR}/tools/shaderc/shaderc_glsl.cpp
+			${BGFX_DIR}/tools/shaderc/shaderc_hlsl.cpp
+			${BGFX_DIR}/tools/shaderc/shaderc_pssl.cpp
+			${BGFX_DIR}/tools/shaderc/shaderc_spirv.cpp
+			${BGFX_DIR}/tools/shaderc/shaderc_metal.cpp
+		)
+		if(MSVC)
+			target_compile_definitions( shaderclib PRIVATE "_CRT_SECURE_NO_WARNINGS" )
+		endif()
 	endif()
 	target_compile_definitions( shaderclib PRIVATE "SHADERC_LIB" )
 	set_target_properties( shaderclib PROPERTIES FOLDER "bgfx/tools" )
-	target_link_libraries( shaderclib PRIVATE bx bimg bgfx-vertexlayout bgfx-shader fcpp glsl-optimizer glslang spirv-cross spirv-tools webgpu )
+
+	set(SHADERCLIB_DEPS )
+	if(EMSCRIPTEN)
+		set(SHADERCLIB_DEPS fcpp glsl-optimizer)
+	else()
+		set(SHADERCLIB_DEPS fcpp glsl-optimizer glslang spirv-cross spirv-tools webgpu)
+	endif()
+
+	target_link_libraries( shaderclib PRIVATE bx bimg bgfx-vertexlayout bgfx-shader ${SHADERCLIB_DEPS})
 
 	set_target_properties( shaderclib PROPERTIES DEBUG_POSTFIX d RELWITHDEBINFO_POSTFIX rd )
 
-	add_executable( shaderc ${BGFX_DIR}/tools/shaderc/main.cpp )
-	target_compile_definitions( shaderc PRIVATE "-D_CRT_SECURE_NO_WARNINGS" )
-	set_target_properties( shaderc PROPERTIES FOLDER "bgfx/tools" )
-	target_link_libraries( shaderc	PRIVATE shaderclib bx bimg bgfx-vertexlayout bgfx-shader fcpp glsl-optimizer glslang spirv-cross spirv-tools webgpu )
+	# HACK
+	if(EMSCRIPTEN)
+		add_executable(shaderclib_test ${BGFX_DIR}/tools/shaderc/test_emscripten.cpp)
+		target_link_libraries(shaderclib_test PRIVATE shaderclib bx bimg bgfx-vertexlayout bgfx-shader)
+		target_link_options(shaderclib_test PRIVATE
+			-sEXPORTED_FUNCTIONS=['_main']
+			-s WASM=0)
+	endif()
+
+	if(NOT EMSCRIPTEN)
+		add_executable( shaderc ${BGFX_DIR}/tools/shaderc/main.cpp )
+		target_compile_definitions( shaderc PRIVATE "-D_CRT_SECURE_NO_WARNINGS" )
+		set_target_properties( shaderc PROPERTIES FOLDER "bgfx/tools" )
+		target_link_libraries( shaderc	PRIVATE shaderclib bx bimg bgfx-vertexlayout bgfx-shader ${SHADERCLIB_DEPS} )
+	endif()
 else()
 	add_executable( shaderc ${BGFX_DIR}/tools/shaderc/main.cpp ${BGFX_DIR}/tools/shaderc/shaderc.cpp ${BGFX_DIR}/tools/shaderc/shaderc.h ${BGFX_DIR}/tools/shaderc/shaderc_glsl.cpp ${BGFX_DIR}/tools/shaderc/shaderc_hlsl.cpp ${BGFX_DIR}/tools/shaderc/shaderc_pssl.cpp ${BGFX_DIR}/tools/shaderc/shaderc_spirv.cpp ${BGFX_DIR}/tools/shaderc/shaderc_metal.cpp )
 	if(MSVC)
@@ -41,15 +79,17 @@ else()
 	target_link_libraries( shaderc PRIVATE bx bimg bgfx-vertexlayout bgfx-shader fcpp glsl-optimizer glslang spirv-cross spirv-tools webgpu )
 endif()
 
-if( BGFX_CUSTOM_TARGETS )
-	add_dependencies( tools shaderc )
-endif()
+if(NOT EMSCRIPTEN)
+	if( BGFX_CUSTOM_TARGETS )
+		add_dependencies( tools shaderc )
+	endif()
 
-if (ANDROID)
-    target_link_libraries(shaderc PRIVATE log)
-elseif (IOS)
-	set_target_properties(shaderc PROPERTIES MACOSX_BUNDLE ON
-											 MACOSX_BUNDLE_GUI_IDENTIFIER shaderc)
+	if (ANDROID)
+		target_link_libraries(shaderc PRIVATE log)
+	elseif (IOS)
+		set_target_properties(shaderc PROPERTIES MACOSX_BUNDLE ON
+												MACOSX_BUNDLE_GUI_IDENTIFIER shaderc)
+	endif()
 endif()
 
 function( add_shader ARG_FILE )

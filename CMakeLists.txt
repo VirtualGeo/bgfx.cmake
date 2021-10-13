@@ -71,7 +71,7 @@ if( BGFX_BUILD_TOOLS )
 	include( cmake/tools.cmake )
 endif()
 
-if( BGFX_BUILD_TOOLS OR BGFX_BUILD_EXAMPLES )
+if( NOT EMSCRIPTEN AND (BGFX_BUILD_TOOLS OR BGFX_BUILD_EXAMPLES) )
 	include( cmake/examples.cmake )
 endif()
 
@@ -164,7 +164,7 @@ if( BGFX_INSTALL )
 	)
 
 	# install tools
-	if( BGFX_BUILD_TOOLS )
+	if( BGFX_BUILD_TOOLS AND NOT EMSCRIPTEN )
 		install( TARGETS shaderc
 			EXPORT "${TARGETS_EXPORT_NAME}"
 			DESTINATION "${CMAKE_INSTALL_BINDIR}" )
