@@ -12,6 +12,10 @@ if( TARGET webgpu )
 	return()
 endif()
 
+if( EMSCRIPTEN )
+	return()
+endif()
+
 file(
 	GLOB
     WEBGPU_SOURCES
@@ -22,7 +26,7 @@ file(
 # Library without sources is interface
 #add_library( webgpu STATIC ${WEBGPU_SOURCES} )
 add_library(webgpu INTERFACE)
-target_include_directories( webgpu 
+target_include_directories( webgpu
     # PUBLIC
     INTERFACE
 	    $<BUILD_INTERFACE:${BGFX_DIR}/3rdparty/webgpu/include>

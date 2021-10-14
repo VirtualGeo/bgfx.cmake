@@ -12,6 +12,10 @@ if( TARGET spirv-cross )
 	return()
 endif()
 
+if( EMSCRIPTEN )
+	return()
+endif()
+
 file(
 	GLOB
 	SPIRV_CROSS_SOURCES

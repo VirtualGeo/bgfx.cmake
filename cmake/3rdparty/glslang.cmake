@@ -12,6 +12,10 @@ if( TARGET glslang )
 	return()
 endif()
 
+if( EMSCRIPTEN )
+	return()
+endif()
+
 file( GLOB GLSLANG_SOURCES
 	${BGFX_DIR}/3rdparty/glslang/glslang/GenericCodeGen/*.cpp
 	${BGFX_DIR}/3rdparty/glslang/glslang/MachineIndependent/*.cpp

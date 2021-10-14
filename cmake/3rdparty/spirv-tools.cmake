@@ -12,6 +12,10 @@ if( TARGET spirv-tools )
 	return()
 endif()
 
+if( EMSCRIPTEN )
+	return()
+endif()
+
 file(
 	GLOB
 	SPIRV_TOOLS_SOURCES
