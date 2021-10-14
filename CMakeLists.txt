@@ -190,6 +190,8 @@ if( BGFX_INSTALL )
 			endforeach()
 			install( FILES ${BGFX_DIR}/tools/shaderc/shaderc.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/shaderc )
 		endif()
+	elseif(EMSCRIPTEN)
+		install( FILES ${BGFX_DIR}/tools/shaderc/shaderc.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/shaderc )
 	endif()
 
 	# install examples
