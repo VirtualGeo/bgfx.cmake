@@ -180,17 +180,21 @@ if( BGFX_INSTALL )
 		install( TARGETS texturev
 			EXPORT "${TARGETS_EXPORT_NAME}"
 			DESTINATION "${CMAKE_INSTALL_BINDIR}" )
+	endif()
 
-		if(BGFX_SHADERC_LIB)
-			set(SHADERC_DEPS fcpp glsl-optimizer glslang spirv-cross spirv-tools shaderclib webgpu)
-			foreach(SHADERC_DEP ${SHADERC_DEPS})
-				install( TARGETS ${SHADERC_DEP}
-					EXPORT shaderc-config
-					ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-			endforeach()
-			install( FILES ${BGFX_DIR}/tools/shaderc/shaderc.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/shaderc )
-		endif()
-	elseif(EMSCRIPTEN)
+	set(SHADERC_DEPS )
+	if(EMSCRIPTEN)
+		set(SHADERC_DEPS fcpp glsl-optimizer shaderclib)
+	elseif(BGFX_SHADERC_LIB)
+		set(SHADERC_DEPS fcpp glsl-optimizer glslang spirv-cross spirv-tools shaderclib webgpu)
+	endif()
+
+	if(BGFX_SHADERC_LIB OR EMSCRIPTEN)
+		foreach(SHADERC_DEP ${SHADERC_DEPS})
+			install( TARGETS ${SHADERC_DEP}
+				EXPORT shaderc-config
+				ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+		endforeach()
 		install( FILES ${BGFX_DIR}/tools/shaderc/shaderc.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/shaderc )
 	endif()
 
