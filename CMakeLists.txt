@@ -40,6 +40,7 @@ set( BGFX_OPENGL_VERSION   ""       CACHE STRING "Specify minimum opengl version
 set( BGFX_OPENGLES_VERSION ""       CACHE STRING "Specify minimum OpenGL ES version" )
 set( BGFX_LIBRARY_TYPE     "STATIC" CACHE STRING "Linking type for library" )
 
+# Note: This is a very specific build based on conan.
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
 
@@ -71,13 +72,7 @@ include( cmake/bx.cmake )
 include( cmake/bimg.cmake )
 include( cmake/bgfx.cmake )
 
-if( BGFX_BUILD_TOOLS )
-	include( cmake/tools.cmake )
-endif()
-
-if( NOT EMSCRIPTEN AND (BGFX_BUILD_TOOLS OR BGFX_BUILD_EXAMPLES) )
-	include( cmake/examples.cmake )
-endif()
+include( cmake/tools.cmake )
 
 if( BGFX_INSTALL )
 	include(GNUInstallDirs)
@@ -167,25 +162,6 @@ if( BGFX_INSTALL )
 		DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/bgfx"
 	)
 
-	# install tools
-	if( BGFX_BUILD_TOOLS AND NOT EMSCRIPTEN )
-		install( TARGETS shaderc
-			EXPORT "${TARGETS_EXPORT_NAME}"
-			DESTINATION "${CMAKE_INSTALL_BINDIR}" )
-		install( TARGETS geometryc
-			EXPORT "${TARGETS_EXPORT_NAME}"
-			DESTINATION "${CMAKE_INSTALL_BINDIR}" )
-    	install( TARGETS geometryv
-			EXPORT "${TARGETS_EXPORT_NAME}"
-			DESTINATION "${CMAKE_INSTALL_BINDIR}" )
-		install( TARGETS texturec
-			EXPORT "${TARGETS_EXPORT_NAME}"
-			DESTINATION "${CMAKE_INSTALL_BINDIR}" )
-		install( TARGETS texturev
-			EXPORT "${TARGETS_EXPORT_NAME}"
-			DESTINATION "${CMAKE_INSTALL_BINDIR}" )
-	endif()
-
 	set(SHADERC_DEPS )
 	if(EMSCRIPTEN)
 		set(SHADERC_DEPS fcpp glsl-optimizer shaderclib)
@@ -200,14 +176,6 @@ if( BGFX_INSTALL )
 				ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 		endforeach()
 		install( FILES ${BGFX_DIR}/tools/shaderc/shaderc.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/shaderc )
-	endif()
-
-	# install examples
-	if( BGFX_BUILD_EXAMPLES AND BGFX_INSTALL_EXAMPLES )
-		install( DIRECTORY ${BGFX_DIR}/examples/runtime/ DESTINATION examples )
-		foreach( EXAMPLE ${BGFX_EXAMPLES} )
-			install( TARGETS example-${EXAMPLE} DESTINATION examples )
-		endforeach()
 	endif()
 
 	# Config
