@@ -34,11 +34,14 @@ option( BX_AMALGAMATED        "Amalgamated bx build for faster compilation"   OF
 option( BGFX_CONFIG_DEBUG     "Enables debug configuration on all builds"     OFF )
 option( BGFX_CONFIG_RENDERER_WEBGPU     "Enables the webgpu renderer"         OFF )
 option( BGFX_USE_DEBUG_SUFFIX "Add 'd' suffix to debug output targets"        ON  )
-option (EMSCRIPTEN_EMULATED_BUILD "Emscripten on Windows -- DXT Hack"         OFF )
+option( EMSCRIPTEN_EMULATED "Emscripten on Windows -- DXT Hack"               ON  )
 
 set( BGFX_OPENGL_VERSION   ""       CACHE STRING "Specify minimum opengl version" )
 set( BGFX_OPENGLES_VERSION ""       CACHE STRING "Specify minimum OpenGL ES version" )
 set( BGFX_LIBRARY_TYPE     "STATIC" CACHE STRING "Linking type for library" )
+
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
 
 set_property( CACHE BGFX_LIBRARY_TYPE PROPERTY STRINGS STATIC SHARED )
 
