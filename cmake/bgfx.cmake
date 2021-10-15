@@ -53,8 +53,8 @@ if(BGFX_CONFIG_RENDERER_WEBGPU)
 endif()
 
 if(EMSCRIPTEN_EMULATED)
-	target_compile_definitions( bgfx PRIVATE BGFX_CONFIG_RENDERER_OPENGLES=1 )
-	target_link_libraries( bgfx PRIVATE CONAN_PKG::opengles )
+	target_compile_definitions( bgfx PRIVATE BGFX_CONFIG_RENDERER_OPENGLES=1 VR_EMSCRIPTEN=1 )
+	target_link_libraries( bgfx PRIVATE CONAN_PKG::opengles CONAN_PKG::EmscriptenEmulation )
 endif()
 
 # Enable BGFX_CONFIG_DEBUG in Debug configuration
