@@ -70,6 +70,7 @@ endif()
 if( NOT ${BGFX_OPENGLES_VERSION} STREQUAL "" )
 	target_compile_definitions( bgfx PRIVATE BGFX_CONFIG_RENDERER_OPENGLES_MIN_VERSION=${BGFX_OPENGLES_VERSION} )
 endif()
+target_compile_definitions( bgfx PRIVATE BGFX_GL_CONFIG_BLIT_EMULATION )
 
 # Special Visual Studio Flags
 if( MSVC )
