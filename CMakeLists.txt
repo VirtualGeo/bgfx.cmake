@@ -137,6 +137,13 @@ if( BGFX_INSTALL )
 				 RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
 				 INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
 		)
+		if(MSVC)
+			set(PROJ_LIST bimg bx bgfx)
+			foreach(PRJ ${PROJ_LIST})
+				set(PDB_RELEASE_LOCATION ${CMAKE_BINARY_DIR}/${PRJ}.dir/Release/${PRJ}.pdb)
+				install(FILES ${PDB_RELEASE_LOCATION} DESTINATION ${CMAKE_INSTALL_LIBDIR} OPTIONAL)
+			endforeach()
+		endif()	
 	endif()
     if (BGFX_CONFIG_RENDERER_WEBGPU)
 		install( TARGETS webgpu
