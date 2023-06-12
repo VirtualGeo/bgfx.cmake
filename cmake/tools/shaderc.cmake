@@ -61,7 +61,7 @@ if(BGFX_SHADERC_LIB)
 		target_link_libraries(shaderclib_test PRIVATE shaderclib bx bimg bgfx-vertexlayout bgfx-shader)
 		target_link_options(shaderclib_test PRIVATE
 			-sEXPORTED_FUNCTIONS=['_main']
-			-s WASM=0)
+			-s WASM=1)
 	endif()
 
 	if(NOT EMSCRIPTEN)
