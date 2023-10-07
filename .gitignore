@@ -13,5 +13,10 @@ install/
 install_manifest.txt
 generated/*
 !generated/*.in
-bgfx-install/
+cmake_install.cmake
+.cache/
 .vscode/
+.idea/
+Makefile
+install*/
+cmake-build-*/
