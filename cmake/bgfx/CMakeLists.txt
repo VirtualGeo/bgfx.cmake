@@ -26,10 +26,12 @@ if(BGFX_BUILD_TOOLS_SHADER)
 	include(3rdparty/glsl-optimizer.cmake)
 	include(3rdparty/fcpp.cmake)
 	include(3rdparty/webgpu.cmake)
-
-	include(shaderc.cmake)
+	
+	
 	if(BGFX_SHADERC_LIB)
 		include(shaderclib.cmake)
+	else()
+		include(shaderc.cmake)
 	endif()
 endif()
 
