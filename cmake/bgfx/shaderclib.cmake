@@ -49,7 +49,7 @@ if(BGFX_AMALGAMATED)
 	target_link_libraries(shaderclib PRIVATE bgfx-shader)
 endif()
 
-#set_target_properties( shaderclib PROPERTIES DEBUG_POSTFIX d RELWITHDEBINFO_POSTFIX rd )
+set_target_properties( shaderclib PROPERTIES DEBUG_POSTFIX d RELWITHDEBINFO_POSTFIX rd )
 
 set_target_properties(
 	shaderclib PROPERTIES FOLDER "bgfx/tools" #
