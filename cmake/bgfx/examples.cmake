@@ -346,6 +346,16 @@ if(BGFX_BUILD_EXAMPLES)
 		add_example(${EXAMPLE})
 	endforeach()
 
+	if(BGFX_SHADERC_LIB)
+		set( BGFX_EXAMPLES_WITH_SHADERCLIB
+				00-embed-shaderc)
+		foreach( EXAMPLE ${BGFX_EXAMPLES_WITH_SHADERCLIB} )
+			add_example(${EXAMPLE})
+			target_link_libraries( example-${EXAMPLE} PUBLIC shaderclib )
+			target_compile_definitions(example-${EXAMPLE} PRIVATE SHADERC_LIB_IMPORT)
+		endforeach()
+	endif()
+		
 	if(BGFX_INSTALL_EXAMPLES)
 		install(DIRECTORY ${BGFX_DIR}/examples/runtime/ DESTINATION examples)
 		foreach(EXAMPLE ${BGFX_EXAMPLES})

@@ -19,6 +19,10 @@ file(
 
 add_executable(shaderc ${SHADERC_SOURCES})
 
+if(MSVC)
+	target_compile_definitions( shaderc PRIVATE "_CRT_SECURE_NO_WARNINGS" )
+endif()
+
 target_link_libraries(
 	shaderc
 	PRIVATE bx
