@@ -79,6 +79,7 @@ set(BGFX_CMAKE_USER_SCRIPT "" CACHE STRING "Path to custom cmake script to inclu
 # Specific VirtualGeo
 # BGFX don't know how we create/manage OpenGLContext (VAO are context wise)
 set(BGFX_CONFIG_RENDERER_OPENGL_FORCE_DISABLE_VAO "1" CACHE STRING "Disable usage of VAO (OpenGL only)")
+set(BGFX_CONFIG_RENDERER_OPENGL_FORCE_DISABLE_QUERY "1" CACHE STRING "Disable usage of query (OpenGL only)")
 
 if(BGFX_CMAKE_USER_SCRIPT)
 	include(${BGFX_CMAKE_USER_SCRIPT})
