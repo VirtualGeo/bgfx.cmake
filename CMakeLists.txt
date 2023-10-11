@@ -76,6 +76,10 @@ set(BGFX_CONFIG_MAX_SHADERS "" CACHE STRING "Specify shader count")
 set(BGFX_CONFIG_SORT_KEY_NUM_BITS_PROGRAM "" CACHE STRING "Specify maximum program count as 2^(program bits)")
 set(BGFX_CMAKE_USER_SCRIPT "" CACHE STRING "Path to custom cmake script to include")
 
+# Specific VirtualGeo
+# BGFX don't know how we create/manage OpenGLContext (VAO are context wise)
+set(BGFX_CONFIG_RENDERER_OPENGL_FORCE_DISABLE_VAO "1" CACHE STRING "Disable usage of VAO (OpenGL only)")
+
 if(BGFX_CMAKE_USER_SCRIPT)
 	include(${BGFX_CMAKE_USER_SCRIPT})
 endif()
