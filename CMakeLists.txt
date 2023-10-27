@@ -186,5 +186,7 @@ if(BGFX_INSTALL)
 
 	# Config
 	#   * <prefix>/lib/cmake/bgfx/bgfxTargets.cmake
-	install(EXPORT "${TARGETS_EXPORT_NAME}" NAMESPACE "${namespace}" DESTINATION "${config_install_dir}")
+	if(NOT EMSCRIPTEN) # This fail with shaderclib, and dunno why
+		install(EXPORT "${TARGETS_EXPORT_NAME}" NAMESPACE "${namespace}" DESTINATION "${config_install_dir}")
+	endif()
 endif()
