@@ -13,6 +13,8 @@ if(EMSCRIPTEN)
 		${BGFX_DIR}/tools/shaderc/shaderc.cpp
 		${BGFX_DIR}/tools/shaderc/shaderc.h
 		${BGFX_DIR}/tools/shaderc/shaderc_glsl.cpp
+		${BGFX_DIR}/tools/shaderc/shaderc_hlsl.cpp
+		${BGFX_DIR}/tools/shaderc/shaderc_pssl.cpp		
 	)
 else()
 	set(SHADERC_SOURCES    
@@ -33,7 +35,12 @@ else()
 		# ${BGFX_DIR}/src/shader_spirv.cpp
 	)
 endif()
-add_library(shaderclib SHARED ${SHADERC_SOURCES})
+
+if(EMSCRIPTEN)
+	add_library(shaderclib STATIC ${SHADERC_SOURCES})
+else()
+	add_library(shaderclib SHARED ${SHADERC_SOURCES})
+endif()
 
 target_compile_definitions( shaderclib PRIVATE "SHADERC_LIB" )
 if(MSVC)

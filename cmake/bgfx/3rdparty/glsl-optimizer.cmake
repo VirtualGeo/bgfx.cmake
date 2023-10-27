@@ -244,3 +244,13 @@ if(MINGW)
 							   "-Wno-misleading-indentation" #
 	)
 endif()
+
+if(EMSCRIPTEN)
+	install(
+		TARGETS glsl-optimizer
+		EXPORT "${TARGETS_EXPORT_NAME}"
+		LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+		ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+		RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+	)
+endif()
