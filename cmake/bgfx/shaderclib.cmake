@@ -75,13 +75,6 @@ set_target_properties(
 					   OUTPUT_NAME ${BGFX_TOOLS_PREFIX}shaderclib #
 )
 
-if(BGFX_BUILD_TOOLS_SHADER)
-	add_executable(bgfx::shaderclib ALIAS shaderclib)
-	if(BGFX_CUSTOM_TARGETS)
-		add_dependencies(tools shaderclib)
-	endif()
-endif()
-
 if(ANDROID)
 	target_link_libraries(shaderclib PRIVATE log)
 elseif(IOS)
