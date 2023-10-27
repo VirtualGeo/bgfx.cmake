@@ -8,23 +8,31 @@
 # You should have received a copy of the CC0 Public Domain Dedication along with
 # this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-set(SHADERC_SOURCES    
-    ${BGFX_DIR}/tools/shaderc/shaderc.cpp
-    ${BGFX_DIR}/tools/shaderc/shaderc.h
-    ${BGFX_DIR}/tools/shaderc/shaderc_glsl.cpp
-    ${BGFX_DIR}/tools/shaderc/shaderc_hlsl.cpp
-    ${BGFX_DIR}/tools/shaderc/shaderc_pssl.cpp
-    #${BGFX_DIR}/tools/shaderc/shaderc_spirv.cpp
-    #${BGFX_DIR}/tools/shaderc/shaderc_metal.cpp
-	#${BGFX_DIR}/src/shader.h
-	#${BGFX_DIR}/src/shader.cpp
-	# ${BGFX_DIR}/src/shader_dx9bc.h
-	# ${BGFX_DIR}/src/shader_dx9bc.cpp
-	# ${BGFX_DIR}/src/shader_dxbc.h
-	# ${BGFX_DIR}/src/shader_dxbc.cpp
-	# ${BGFX_DIR}/src/shader_spirv.h
-	# ${BGFX_DIR}/src/shader_spirv.cpp
-)
+if(EMSCRIPTEN)
+	set(SHADERC_SOURCES    
+		${BGFX_DIR}/tools/shaderc/shaderc.cpp
+		${BGFX_DIR}/tools/shaderc/shaderc.h
+		${BGFX_DIR}/tools/shaderc/shaderc_glsl.cpp
+	)
+else()
+	set(SHADERC_SOURCES    
+		${BGFX_DIR}/tools/shaderc/shaderc.cpp
+		${BGFX_DIR}/tools/shaderc/shaderc.h
+		${BGFX_DIR}/tools/shaderc/shaderc_glsl.cpp
+		${BGFX_DIR}/tools/shaderc/shaderc_hlsl.cpp
+		${BGFX_DIR}/tools/shaderc/shaderc_pssl.cpp
+		#${BGFX_DIR}/tools/shaderc/shaderc_spirv.cpp
+		#${BGFX_DIR}/tools/shaderc/shaderc_metal.cpp
+		#${BGFX_DIR}/src/shader.h
+		#${BGFX_DIR}/src/shader.cpp
+		# ${BGFX_DIR}/src/shader_dx9bc.h
+		# ${BGFX_DIR}/src/shader_dx9bc.cpp
+		# ${BGFX_DIR}/src/shader_dxbc.h
+		# ${BGFX_DIR}/src/shader_dxbc.cpp
+		# ${BGFX_DIR}/src/shader_spirv.h
+		# ${BGFX_DIR}/src/shader_spirv.cpp
+	)
+endif()
 add_library(shaderclib SHARED ${SHADERC_SOURCES})
 
 target_compile_definitions( shaderclib PRIVATE "SHADERC_LIB" )
@@ -32,18 +40,29 @@ if(MSVC)
 	target_compile_definitions( shaderclib PRIVATE "_CRT_SECURE_NO_WARNINGS" )
 endif()
 
-target_link_libraries(
-	shaderclib
-	PRIVATE bx
-			bimg
-			bgfx-vertexlayout
-			fcpp
-			glslang
-			glsl-optimizer
-			spirv-opt
-			spirv-cross
-			webgpu
-)
+if(EMSCRIPTEN)
+	target_link_libraries(
+		shaderclib
+		PRIVATE bx
+				bimg
+				bgfx-vertexlayout
+				fcpp
+				glsl-optimizer
+	)
+else()
+	target_link_libraries(
+		shaderclib
+		PRIVATE bx
+				bimg
+				bgfx-vertexlayout
+				fcpp
+				glslang
+				glsl-optimizer
+				spirv-opt
+				spirv-cross
+				webgpu
+	)
+endif()
 
 if(BGFX_AMALGAMATED)
 	target_link_libraries(shaderclib PRIVATE bgfx-shader)
@@ -55,6 +74,13 @@ set_target_properties(
 	shaderclib PROPERTIES FOLDER "bgfx/tools" #
 					   OUTPUT_NAME ${BGFX_TOOLS_PREFIX}shaderclib #
 )
+
+if(BGFX_BUILD_TOOLS_SHADER)
+	add_executable(bgfx::shaderclib ALIAS shaderclib)
+	if(BGFX_CUSTOM_TARGETS)
+		add_dependencies(tools shaderclib)
+	endif()
+endif()
 
 if(ANDROID)
 	target_link_libraries(shaderclib PRIVATE log)
