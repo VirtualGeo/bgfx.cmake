@@ -229,6 +229,10 @@ else()
 				"-Wno-unused-function" #
 				"-Wno-unused-parameter" #
 	)
+	target_compile_definitions(
+		glsl-optimizer
+		PRIVATE "_GNU_SOURCE"
+	)
 endif()
 
 if(XCODE)
