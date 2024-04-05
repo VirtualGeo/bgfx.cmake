@@ -81,6 +81,10 @@ set(BGFX_CMAKE_USER_SCRIPT "" CACHE STRING "Path to custom cmake script to inclu
 set(BGFX_CONFIG_RENDERER_OPENGL_FORCE_DISABLE_VAO "1" CACHE STRING "Disable usage of VAO (OpenGL only)")
 set(BGFX_CONFIG_RENDERER_OPENGL_FORCE_DISABLE_QUERY "1" CACHE STRING "Disable usage of query (OpenGL only)")
 
+# Note: This is a very specific build based on conan.
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
+
 if(BGFX_CMAKE_USER_SCRIPT)
 	include(${BGFX_CMAKE_USER_SCRIPT})
 endif()
